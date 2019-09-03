@@ -13,7 +13,7 @@ public class ShareViewModel extends ViewModel {
         mText.setValue("This is share fragment");
     }
 
-    public LiveData<String> getText() {
+    public MutableLiveData<String> getText() {
         return mText;
     }
 }

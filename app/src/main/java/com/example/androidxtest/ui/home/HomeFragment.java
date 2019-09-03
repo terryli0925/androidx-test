@@ -11,10 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.androidxtest.R;
+import com.example.androidxtest.adapters.TabPagerAdapter;
+import com.example.androidxtest.ui.send.SendFragment;
+import com.example.androidxtest.ui.share.ShareFragment;
+import com.google.android.material.tabs.TabLayout;
 
 public class HomeFragment extends Fragment {
+
+    private static final String TAG = HomeFragment.class.getSimpleName();
 
     private HomeViewModel homeViewModel;
 
@@ -23,13 +30,21 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        ViewPager viewPager = view.findViewById(R.id.viewpager);
+//        viewPager.setOffscreenPageLimit(4);
+
+        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getChildFragmentManager(), getActivity());
+        pagerAdapter.addFragment(new SendFragment(), "Send");
+        pagerAdapter.addFragment(new ShareFragment(), "Share");
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
 }
