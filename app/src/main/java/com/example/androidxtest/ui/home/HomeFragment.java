@@ -4,17 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.androidxtest.R;
-import com.example.androidxtest.adapters.TabPagerAdapter;
+import com.example.androidxtest.adapter.TabPagerAdapter;
 import com.example.androidxtest.ui.send.SendFragment;
 import com.example.androidxtest.ui.share.ShareFragment;
 import com.google.android.material.tabs.TabLayout;

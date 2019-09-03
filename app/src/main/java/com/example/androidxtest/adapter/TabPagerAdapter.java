@@ -1,4 +1,4 @@
-package com.example.androidxtest.adapters;
+package com.example.androidxtest.adapter;
 
 import android.content.Context;
 

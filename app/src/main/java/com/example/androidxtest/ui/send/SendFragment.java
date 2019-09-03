@@ -5,9 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -15,10 +13,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidxtest.R;
-import com.example.androidxtest.adapters.UserAdapter;
+import com.example.androidxtest.adapter.UserAdapter;
 import com.example.androidxtest.db.AppDatabase;
 import com.example.androidxtest.db.User;
 import com.example.androidxtest.db.UserDao;
+import com.example.androidxtest.util.AppExecutors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +42,9 @@ public class SendFragment extends Fragment {
         mUserAdapter = new UserAdapter();
         mRecyclerView.setAdapter(mUserAdapter);
 
-//        mUserAdapter.setUsers(generateUsers());
-
         mUserDao = AppDatabase.getInstance(getActivity().getApplicationContext()).getUserDao();
 
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 mUserDao.insertUsers(generateUsers().toArray(new User[10]));

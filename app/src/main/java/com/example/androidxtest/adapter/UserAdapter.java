@@ -1,6 +1,5 @@
-package com.example.androidxtest.adapters;
+package com.example.androidxtest.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
