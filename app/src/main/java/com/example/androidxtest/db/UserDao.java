@@ -24,6 +24,9 @@ public interface UserDao {
             "last_name LIKE :last LIMIT 1")
     User findUserByName(String first, String last);
 
+    @Query("DELETE FROM user")
+    void deleteAllUsers();
+
     @Insert
     void insertUsers(User... users);
 
@@ -31,5 +34,5 @@ public interface UserDao {
     void updateUser(User user);
 
     @Delete
-    void deleteUser(User user);
+    void deleteUsers(User... users);
 }

@@ -34,11 +34,20 @@ public class UserRepository {
         });
     }
 
-    public void deleteUser(final User user) {
+    public void deleteAllUsers() {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                userDao.deleteUser(user);
+                userDao.deleteAllUsers();
+            }
+        });
+    }
+
+    public void deleteUsers(final User... users) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                userDao.deleteUsers(users);
             }
         });
     }
