@@ -14,10 +14,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> implements View.OnClickListener {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> implements View.OnClickListener, View.OnLongClickListener {
 
     private ArrayList<User> mUserList;
     private OnItemClickListener mOnItemClickListener = null;
+    private OnItemLongClickListener mOnItemLongClickListener = null;
 
     public UserAdapter() {
         mUserList = new ArrayList<>();
@@ -28,6 +29,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_user, parent, false);
         v.setOnClickListener(this);
+        v.setOnLongClickListener(this);
         UserViewHolder vh = new UserViewHolder(v);
         return vh;
     }
@@ -62,14 +64,30 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         }
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        if (mOnItemLongClickListener != null) {
+            mOnItemLongClickListener.onItemLongClick(v, (int) v.getTag());
+        }
+        return true;
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
 
-    //define interface
+    public void setOnItemLognClickListener(OnItemLongClickListener listener) {
+        this.mOnItemLongClickListener = listener;
+    }
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position);
+    }
+
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
 

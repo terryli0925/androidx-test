@@ -43,6 +43,15 @@ public class UserRepository {
         });
     }
 
+    public void updateUser(final User user) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                userDao.updateUser(user);
+            }
+        });
+    }
+
     public LiveData<List<User>> getUsers() {
         return userDao.loadAllUsers();
     }
