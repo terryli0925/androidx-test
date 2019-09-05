@@ -14,9 +14,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> implements View.OnClickListener {
 
     private ArrayList<User> mUserList;
+    private OnItemClickListener mOnItemClickListener = null;
 
     public UserAdapter() {
         mUserList = new ArrayList<>();
@@ -26,6 +27,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_user, parent, false);
+        v.setOnClickListener(this);
         UserViewHolder vh = new UserViewHolder(v);
         return vh;
     }
@@ -35,11 +37,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         User user = mUserList.get(position);
         holder.mFirstName.setText(user.firstName);
         holder.mLastName.setText(user.lastName);
+        holder.itemView.setTag(position);
     }
 
     @Override
     public int getItemCount() {
         return mUserList.size();
+    }
+
+    public User getItem(int position) {
+        return mUserList.get(position);
     }
 
     public void setUsers(List<User> users) {
@@ -48,6 +55,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         notifyDataSetChanged();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (mOnItemClickListener != null) {
+            mOnItemClickListener.onItemClick(v, (int) v.getTag());
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
+    //define interface
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
 
     static class UserViewHolder extends RecyclerView.ViewHolder {
 
