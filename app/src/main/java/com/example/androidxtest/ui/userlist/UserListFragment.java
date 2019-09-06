@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.example.androidxtest.R;
 import com.example.androidxtest.adapter.UserAdapter;
+import com.example.androidxtest.databinding.FragmentUserListBinding;
 import com.example.androidxtest.db.AppDatabase;
 import com.example.androidxtest.db.User;
 import com.example.androidxtest.db.UserRepository;
@@ -32,8 +33,8 @@ public class UserListFragment extends Fragment {
     private static final String TAG = UserListFragment.class.getSimpleName();
 
     private UserListViewModel mViewModel;
-    private RecyclerView mRecyclerView;
     private UserAdapter mUserAdapter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,23 +44,20 @@ public class UserListFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        FragmentUserListBinding binding = FragmentUserListBinding.inflate(inflater, container, false);
         UserRepository repository = UserRepository.getInstance(AppDatabase.getInstance(getActivity().getApplicationContext()).getUserDao());
         UserListViewModelFactory factory = new UserListViewModelFactory(repository);
         mViewModel = ViewModelProviders.of(this, factory).get(UserListViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_user_list, container, false);
-        FloatingActionButton fab = root.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mViewModel.insertUser();
             }
         });
 
-        mRecyclerView = root.findViewById(R.id.users_list);
-        mRecyclerView.setHasFixedSize(true);
         mUserAdapter = new UserAdapter();
-        mRecyclerView.setAdapter(mUserAdapter);
-
+        binding.usersList.setHasFixedSize(true);
+        binding.usersList.setAdapter(mUserAdapter);
         mUserAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, User user) {
@@ -81,7 +79,7 @@ public class UserListFragment extends Fragment {
             }
         });
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override
