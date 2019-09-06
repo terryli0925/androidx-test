@@ -13,7 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.androidxtest.R;
 import com.example.androidxtest.adapter.TabPagerAdapter;
-import com.example.androidxtest.ui.send.SendFragment;
+import com.example.androidxtest.ui.userlist.UserListFragment;
 import com.example.androidxtest.ui.share.ShareFragment;
 import com.google.android.material.tabs.TabLayout;
 
@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
 //        viewPager.setOffscreenPageLimit(4);
 
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getChildFragmentManager(), getActivity());
-        pagerAdapter.addFragment(new SendFragment(), "Send");
+        pagerAdapter.addFragment(new UserListFragment(), "Users");
         pagerAdapter.addFragment(new ShareFragment(), "Share");
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

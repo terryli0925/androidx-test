@@ -14,7 +14,7 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_user_list">Users</string>
 
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>

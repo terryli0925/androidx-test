@@ -1,4 +1,4 @@
-package com.example.androidxtest.ui.send;
+package com.example.androidxtest.ui.userlist;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -19,7 +19,6 @@ import com.example.androidxtest.db.UserRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
-import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -28,22 +27,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SendFragment extends Fragment {
+public class UserListFragment extends Fragment {
 
-    private static final String TAG = SendFragment.class.getSimpleName();
+    private static final String TAG = UserListFragment.class.getSimpleName();
 
-    private SendViewModel mViewModel;
+    private UserListViewModel mViewModel;
     private RecyclerView mRecyclerView;
     private UserAdapter mUserAdapter;
-    private UserRepository mUserRepository;
-
-    public static User generateUser() {
-        Random random = new Random();
-        User user = new User();
-        user.setFirstName("Terry" + random.nextInt(100));
-        user.setLastName("Li" + random.nextInt(100));
-        return user;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,16 +43,15 @@ public class SendFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mUserRepository =
-                UserRepository.getInstance(AppDatabase.getInstance(getActivity().getApplicationContext()).getUserDao());
-        mViewModel =
-                ViewModelProviders.of(this).get(SendViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_send, container, false);
+        UserRepository repository = UserRepository.getInstance(AppDatabase.getInstance(getActivity().getApplicationContext()).getUserDao());
+        UserListViewModelFactory factory = new UserListViewModelFactory(repository);
+        mViewModel = ViewModelProviders.of(this, factory).get(UserListViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_user_list, container, false);
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mUserRepository.insertUsers(generateUser());
+                mViewModel.insertUser();
             }
         });
 
@@ -70,6 +59,7 @@ public class SendFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mUserAdapter = new UserAdapter();
         mRecyclerView.setAdapter(mUserAdapter);
+
         mUserAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, User user) {
@@ -79,11 +69,11 @@ public class SendFragment extends Fragment {
         mUserAdapter.setOnItemLognClickListener(new UserAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, User user) {
-                mUserRepository.deleteUsers(user);
+                mViewModel.deleteUser(user);
             }
         });
 
-        mUserRepository.getUsers().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+        mViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
                 Log.i(TAG, "onChanged: " + users.size());
@@ -97,7 +87,7 @@ public class SendFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear(); // Clear menu before inflating new menu
-        inflater.inflate(R.menu.menu_send, menu);
+        inflater.inflate(R.menu.menu_user_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -105,7 +95,7 @@ public class SendFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_clear:
-                mUserRepository.deleteAllUsers();
+                mViewModel.deleteAllUsers();
                 return true;
         }
 
@@ -125,7 +115,7 @@ public class SendFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         user.setFirstName(firstName.getText().toString());
                         user.setLastName(lastName.getText().toString());
-                        mUserRepository.updateUser(user);
+                        mViewModel.updateUser(user);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
