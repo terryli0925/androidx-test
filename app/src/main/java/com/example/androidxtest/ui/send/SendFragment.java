@@ -40,8 +40,8 @@ public class SendFragment extends Fragment {
     public static User generateUser() {
         Random random = new Random();
         User user = new User();
-        user.firstName = "Terry" + random.nextInt(100);
-        user.lastName = "Li" + random.nextInt(100);
+        user.setFirstName("Terry" + random.nextInt(100));
+        user.setLastName("Li" + random.nextInt(100));
         return user;
     }
 
@@ -89,7 +89,7 @@ public class SendFragment extends Fragment {
             @Override
             public void onChanged(List<User> users) {
                 Log.i(TAG, "onChanged: " + users.size());
-                mUserAdapter.setUsers(users);
+                mUserAdapter.setUserList(users);
             }
         });
 
@@ -125,8 +125,8 @@ public class SendFragment extends Fragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        user.firstName = firstName.getText().toString();
-                        user.lastName = lastName.getText().toString();
+                        user.setFirstName(firstName.getText().toString());
+                        user.setLastName(lastName.getText().toString());
                         mUserRepository.updateUser(user);
                     }
                 })
