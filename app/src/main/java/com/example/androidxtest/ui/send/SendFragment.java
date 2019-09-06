@@ -72,15 +72,13 @@ public class SendFragment extends Fragment {
         mRecyclerView.setAdapter(mUserAdapter);
         mUserAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                User user = mUserAdapter.getItem(position);
+            public void onItemClick(View view, User user) {
                 showUpdateUserDialog(user);
             }
         });
         mUserAdapter.setOnItemLognClickListener(new UserAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(View view, int position) {
-                User user = mUserAdapter.getItem(position);
+            public void onItemLongClick(View view, User user) {
                 mUserRepository.deleteUsers(user);
             }
         });
@@ -89,7 +87,7 @@ public class SendFragment extends Fragment {
             @Override
             public void onChanged(List<User> users) {
                 Log.i(TAG, "onChanged: " + users.size());
-                mUserAdapter.setUserList(users);
+                mUserAdapter.submitList(users);
             }
         });
 
