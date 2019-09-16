@@ -1,11 +1,11 @@
 package com.example.androidxtest.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.androidxtest.R;
+import com.example.androidxtest.databinding.ListItemUserBinding;
 import com.example.androidxtest.db.User;
 
 import androidx.annotation.NonNull;
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserAdapter extends ListAdapter<User, UserAdapter.UserViewHolder> implements View.OnClickListener, View.OnLongClickListener {
+public class UserAdapter extends ListAdapter<User, UserAdapter.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
 
     private OnItemClickListener mOnItemClickListener = null;
     private OnItemLongClickListener mOnItemLongClickListener = null;
@@ -24,19 +24,17 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.UserViewHolder> i
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_user, parent, false);
-        v.setOnClickListener(this);
-        v.setOnLongClickListener(this);
-        UserViewHolder vh = new UserViewHolder(v);
-        return vh;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ListItemUserBinding binding = ListItemUserBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        binding.getRoot().setOnClickListener(this);
+        binding.getRoot().setOnLongClickListener(this);
+        return new ViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = getItem(position);
-        holder.mFirstName.setText(user.getFirstName());
-        holder.mLastName.setText(user.getLastName());
+        holder.bind(user);
         holder.itemView.setTag(user);
     }
 
@@ -72,17 +70,19 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.UserViewHolder> i
     }
 
 
-    static class UserViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mFirstName;
-        TextView mLastName;
+        private ListItemUserBinding binding;
 
-        public UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mFirstName = itemView.findViewById(R.id.first_name);
-            mLastName = itemView.findViewById(R.id.last_name);
+        public ViewHolder(ListItemUserBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
+        void bind(User user) {
+            binding.setUser(user);
+            binding.executePendingBindings();
+        }
     }
 
     static class UserDiffCallback extends DiffUtil.ItemCallback<User> {
@@ -92,6 +92,7 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.UserViewHolder> i
             return oldItem.getId() == newItem.getId();
         }
 
+        @SuppressLint("DiffUtilEquals")
         @Override
         public boolean areContentsTheSame(@NonNull User oldItem, @NonNull User newItem) {
             return oldItem.equals(newItem);

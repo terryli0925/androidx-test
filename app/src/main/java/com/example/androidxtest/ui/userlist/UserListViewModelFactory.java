@@ -19,6 +19,9 @@ public class UserListViewModelFactory extends ViewModelProvider.NewInstanceFacto
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new UserListViewModel(mUserRepository);
+        if (modelClass.isAssignableFrom(UserListViewModel.class)) {
+            return (T) new UserListViewModel(mUserRepository);
+        }
+        throw new IllegalArgumentException("Unknown ViewModel class" + modelClass);
     }
 }
