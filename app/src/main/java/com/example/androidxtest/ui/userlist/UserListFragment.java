@@ -1,6 +1,5 @@
 package com.example.androidxtest.ui.userlist;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,12 +17,9 @@ import com.example.androidxtest.db.AppDatabase;
 import com.example.androidxtest.db.User;
 import com.example.androidxtest.db.UserRepository;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 public class UserListFragment extends Fragment {
@@ -46,35 +42,17 @@ public class UserListFragment extends Fragment {
         UserRepository repository = UserRepository.getInstance(AppDatabase.getInstance(getActivity().getApplicationContext()).getUserDao());
         UserListViewModelFactory factory = new UserListViewModelFactory(repository);
         mViewModel = ViewModelProviders.of(this, factory).get(UserListViewModel.class);
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mViewModel.insertUser();
-            }
-        });
+        binding.setViewModel(mViewModel);
 
         mUserAdapter = new UserAdapter();
         binding.usersList.setHasFixedSize(true);
         binding.usersList.setAdapter(mUserAdapter);
-        mUserAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, User user) {
-                showUpdateUserDialog(user);
-            }
-        });
-        mUserAdapter.setOnItemLognClickListener(new UserAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(View view, User user) {
-                mViewModel.deleteUser(user);
-            }
-        });
+        mUserAdapter.setOnItemClickListener((view, user) -> showUpdateUserDialog(user));
+        mUserAdapter.setOnItemLognClickListener((view, user) -> mViewModel.deleteUser(user));
 
-        mViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                Log.i(TAG, "onChanged: " + users.size());
-                mUserAdapter.submitList(users);
-            }
+        mViewModel.getUsers().observe(getViewLifecycleOwner(), (users) -> {
+            Log.i(TAG, "onChanged: " + users.size());
+            mUserAdapter.submitList(users);
         });
 
         return binding.getRoot();
@@ -106,17 +84,12 @@ public class UserListFragment extends Fragment {
 
         new AlertDialog.Builder(getActivity())
                 .setView(view)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        user.setFirstName(firstName.getText().toString());
-                        user.setLastName(lastName.getText().toString());
-                        mViewModel.updateUser(user);
-                    }
+                .setPositiveButton(R.string.ok, (dialog, id) -> {
+                    user.setFirstName(firstName.getText().toString());
+                    user.setLastName(lastName.getText().toString());
+                    mViewModel.updateUser(user);
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
+                .setNegativeButton(R.string.cancel, (dialog, id) -> {
                 }).create().show();
     }
 }

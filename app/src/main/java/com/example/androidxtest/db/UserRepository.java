@@ -26,39 +26,19 @@ public class UserRepository {
     }
 
     public void insertUsers(final User... users) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                userDao.insertUsers(users);
-            }
-        });
+        AppExecutors.getInstance().diskIO().execute(() -> userDao.insertUsers(users));
     }
 
     public void deleteAllUsers() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                userDao.deleteAllUsers();
-            }
-        });
+        AppExecutors.getInstance().diskIO().execute(() -> userDao.deleteAllUsers());
     }
 
     public void deleteUsers(final User... users) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                userDao.deleteUsers(users);
-            }
-        });
+        AppExecutors.getInstance().diskIO().execute(() -> userDao.deleteUsers(users));
     }
 
     public void updateUser(final User user) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                userDao.updateUser(user);
-            }
-        });
+        AppExecutors.getInstance().diskIO().execute(() -> userDao.updateUser(user));
     }
 
     public LiveData<List<User>> getUsers() {
