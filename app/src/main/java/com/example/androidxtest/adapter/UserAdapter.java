@@ -1,11 +1,10 @@
 package com.example.androidxtest.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.androidxtest.R;
 import com.example.androidxtest.databinding.ListItemUserBinding;
 import com.example.androidxtest.db.User;
 
@@ -26,18 +25,15 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.ViewHolder> imple
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_user, parent, false);
-//        v.setOnClickListener(this);
-//        v.setOnLongClickListener(this);
-//        ViewHolder vh = new ViewHolder(v);
-        return new ViewHolder(ListItemUserBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        ListItemUserBinding binding = ListItemUserBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        binding.getRoot().setOnClickListener(this);
+        binding.getRoot().setOnLongClickListener(this);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = getItem(position);
-//        holder.mFirstName.setText(user.getFirstName());
-//        holder.mLastName.setText(user.getLastName());
         holder.bind(user);
         holder.itemView.setTag(user);
     }
@@ -78,24 +74,12 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.ViewHolder> imple
 
         private ListItemUserBinding binding;
 
-//
-//        TextView mFirstName;
-//        TextView mLastName;
-//
-//        public ViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//            mFirstName = itemView.findViewById(R.id.first_name);
-//            mLastName = itemView.findViewById(R.id.last_name);
-//        }
-
         public ViewHolder(ListItemUserBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
         void bind(User user) {
-//            binding.firstName.setText(user.getFirstName());
-//            binding.lastName.setText(user.getLastName());
             binding.setUser(user);
             binding.executePendingBindings();
         }
@@ -108,6 +92,7 @@ public class UserAdapter extends ListAdapter<User, UserAdapter.ViewHolder> imple
             return oldItem.getId() == newItem.getId();
         }
 
+        @SuppressLint("DiffUtilEquals")
         @Override
         public boolean areContentsTheSame(@NonNull User oldItem, @NonNull User newItem) {
             return oldItem.equals(newItem);

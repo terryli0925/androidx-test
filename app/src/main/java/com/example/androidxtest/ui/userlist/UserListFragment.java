@@ -17,7 +17,6 @@ import com.example.androidxtest.databinding.FragmentUserListBinding;
 import com.example.androidxtest.db.AppDatabase;
 import com.example.androidxtest.db.User;
 import com.example.androidxtest.db.UserRepository;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -26,7 +25,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class UserListFragment extends Fragment {
 
