@@ -5,6 +5,7 @@ import com.example.androidxtest.util.AppExecutors;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 
 public class UserRepository {
     private static UserRepository instance;
@@ -47,6 +48,10 @@ public class UserRepository {
 
     public List<User> getUsersSync() {
         return userDao.loadAllUsersSync();
+    }
+
+    public DataSource.Factory<Integer, User> getUsersByPaging() {
+        return userDao.loadAllUsersByPaging();
     }
 
     public List<User> getUsersByIds(int[] userIds) {

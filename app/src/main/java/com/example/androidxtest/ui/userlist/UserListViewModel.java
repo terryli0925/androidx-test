@@ -3,20 +3,22 @@ package com.example.androidxtest.ui.userlist;
 import com.example.androidxtest.db.User;
 import com.example.androidxtest.db.UserRepository;
 
-import java.util.List;
 import java.util.Random;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 public class UserListViewModel extends ViewModel {
 
     private UserRepository mUserRepository;
-    private LiveData<List<User>> mUsers;
+    private LiveData<PagedList<User>> mUsers;
 
     public UserListViewModel(UserRepository userRepository) {
         mUserRepository = userRepository;
-        mUsers = mUserRepository.getUsers();
+        mUsers = new LivePagedListBuilder<>(
+                mUserRepository.getUsersByPaging(), 5).build();
     }
 
     private static User generateUser() {
@@ -43,7 +45,7 @@ public class UserListViewModel extends ViewModel {
         mUserRepository.deleteAllUsers();
     }
 
-    public LiveData<List<User>> getUsers() {
+    public LiveData<PagedList<User>> getUsers() {
         return mUsers;
     }
 

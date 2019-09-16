@@ -3,6 +3,7 @@ package com.example.androidxtest.db;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -16,6 +17,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM user")
     List<User> loadAllUsersSync();
+
+    @Query("SELECT * FROM user")
+    DataSource.Factory<Integer, User> loadAllUsersByPaging();
 
     @Query("SELECT * FROM user WHERE id IN (:userIds)")
     List<User> loadAllUsersByIds(int[] userIds);

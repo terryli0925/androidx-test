@@ -9,11 +9,11 @@ import com.example.androidxtest.databinding.ListItemUserBinding;
 import com.example.androidxtest.db.User;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UserAdapter extends ListAdapter<User, UserAdapter.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
+public class UserAdapter extends PagedListAdapter<User, UserAdapter.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
 
     private OnItemClickListener mOnItemClickListener = null;
     private OnItemLongClickListener mOnItemLongClickListener = null;
