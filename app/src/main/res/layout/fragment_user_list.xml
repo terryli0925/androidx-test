@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
-            android:onClick="@{(view) -> viewModel.insertUser()}"
+            android:onClick="@{(view) -> viewModel.insertUsersFromLocal()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_add_black_24dp" />

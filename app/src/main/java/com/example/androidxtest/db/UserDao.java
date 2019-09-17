@@ -30,6 +30,9 @@ public interface UserDao {
     @Insert
     void insertUsers(User... users);
 
+    @Insert
+    void insertUsers(List<User> users);
+
     @Update
     void updateUser(User user);
 

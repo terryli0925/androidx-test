@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.example.androidxtest.Constants;
 import com.example.androidxtest.R;
 import com.example.androidxtest.adapter.UserAdapter;
 import com.example.androidxtest.databinding.FragmentUserListBinding;
@@ -18,9 +19,13 @@ import com.example.androidxtest.db.User;
 import com.example.androidxtest.db.UserRepository;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 public class UserListFragment extends Fragment {
 
@@ -40,7 +45,7 @@ public class UserListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         FragmentUserListBinding binding = FragmentUserListBinding.inflate(inflater, container, false);
         UserRepository repository = UserRepository.getInstance(AppDatabase.getInstance(getActivity().getApplicationContext()).getUserDao());
-        UserListViewModelFactory factory = new UserListViewModelFactory(repository);
+        UserListViewModelFactory factory = new UserListViewModelFactory(getActivity().getApplication(), repository);
         mViewModel = ViewModelProviders.of(this, factory).get(UserListViewModel.class);
         binding.setViewModel(mViewModel);
 
@@ -54,6 +59,20 @@ public class UserListFragment extends Fragment {
             Log.i(TAG, "onChanged: " + users.size());
             mUserAdapter.submitList(users);
         });
+
+        WorkManager.getInstance(getActivity()).getWorkInfosByTagLiveData(Constants.TAG_INSERT_USER_WORKER)
+                .observe(getViewLifecycleOwner(), listOfWorkInfo -> {
+                    if (listOfWorkInfo == null || listOfWorkInfo.isEmpty()) {
+                        return;
+                    }
+
+                    // We only care about the first output status.
+                    // Every continuation has only one worker tagged TAG_INSERT_USER_WORKER
+                    WorkInfo workInfo = listOfWorkInfo.get(0);
+                    boolean finished = workInfo.getState().isFinished();
+                    Log.i(TAG, "WorkerStatus: " + listOfWorkInfo.size());
+                    Log.i(TAG, "WorkerStatus: " + finished);
+                });
 
         return binding.getRoot();
     }

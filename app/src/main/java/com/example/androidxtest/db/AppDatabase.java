@@ -2,6 +2,8 @@ package com.example.androidxtest.db;
 
 import android.content.Context;
 
+import com.example.androidxtest.Constants;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -11,8 +13,6 @@ import androidx.room.RoomDatabase;
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase sInstance;
-
-    public static final String DATABASE_NAME = "basic-sample-db";
 
     public abstract UserDao getUserDao();
 
@@ -31,7 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static AppDatabase buildDatabase(final Context appContext) {
-        return Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME)
+        return Room.databaseBuilder(appContext, AppDatabase.class, Constants.DATABASE_NAME)
                 .build();
     }
 
@@ -39,7 +39,7 @@ public abstract class AppDatabase extends RoomDatabase {
      * Check whether the database already exists and expose it via {@link #getDatabaseCreated()}
      */
     private void updateDatabaseCreated(final Context context) {
-        if (context.getDatabasePath(DATABASE_NAME).exists()) {
+        if (context.getDatabasePath(Constants.DATABASE_NAME).exists()) {
             setDatabaseCreated();
         }
     }

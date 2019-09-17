@@ -1,5 +1,7 @@
 package com.example.androidxtest.ui.userlist;
 
+import android.app.Application;
+
 import com.example.androidxtest.db.UserRepository;
 
 import androidx.annotation.NonNull;
@@ -8,11 +10,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 public class UserListViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
+    private Application mApplication;
     private UserRepository mUserRepository;
 
-    public UserListViewModelFactory(@NonNull UserRepository userRepository) {
+    public UserListViewModelFactory(@NonNull Application application, @NonNull UserRepository userRepository) {
         super();
-        this.mUserRepository = userRepository;
+        mApplication = application;
+        mUserRepository = userRepository;
     }
 
     @NonNull
@@ -20,7 +24,7 @@ public class UserListViewModelFactory extends ViewModelProvider.NewInstanceFacto
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(UserListViewModel.class)) {
-            return (T) new UserListViewModel(mUserRepository);
+            return (T) new UserListViewModel(mApplication, mUserRepository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class" + modelClass);
     }
