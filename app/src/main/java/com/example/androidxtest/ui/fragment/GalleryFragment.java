@@ -1,4 +1,4 @@
-package com.example.androidxtest.ui.gallery;
+package com.example.androidxtest.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.androidxtest.R;
+import com.example.androidxtest.viewmodel.GalleryViewModel;
 
 public class GalleryFragment extends Fragment {
 

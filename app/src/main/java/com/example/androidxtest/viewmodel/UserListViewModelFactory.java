@@ -1,8 +1,9 @@
-package com.example.androidxtest.ui.userlist;
+package com.example.androidxtest.viewmodel;
 
 import android.app.Application;
 
 import com.example.androidxtest.db.UserRepository;
+import com.example.androidxtest.viewmodel.UserListViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

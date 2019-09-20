@@ -1,4 +1,4 @@
-package com.example.androidxtest.ui.userlist;
+package com.example.androidxtest.ui.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +17,12 @@ import com.example.androidxtest.databinding.FragmentUserListBinding;
 import com.example.androidxtest.db.AppDatabase;
 import com.example.androidxtest.db.User;
 import com.example.androidxtest.db.UserRepository;
+import com.example.androidxtest.viewmodel.UserListViewModel;
+import com.example.androidxtest.viewmodel.UserListViewModelFactory;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;

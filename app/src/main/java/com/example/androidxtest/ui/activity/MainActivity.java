@@ -1,7 +1,8 @@
-package com.example.androidxtest;
+package com.example.androidxtest.ui.activity;
 
 import android.os.Bundle;
 
+import com.example.androidxtest.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 

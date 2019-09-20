@@ -49,11 +49,11 @@ public class UserRepository {
         return userDao.loadAllUsersSync();
     }
 
-    public List<User> getUsersByIds(int[] userIds) {
-        return userDao.loadAllUsersByIds(userIds);
+    public LiveData<User> getUserByIds(int userId) {
+        return userDao.loadUserById(userId);
     }
 
-    public User findUserByName(String first, String last) {
+    public LiveData<User> findUserByName(String first, String last) {
         return userDao.findUserByName(first, last);
     }
 }

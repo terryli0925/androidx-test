@@ -1,4 +1,4 @@
-package com.example.androidxtest.ui.share;
+package com.example.androidxtest.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.androidxtest.R;
+import com.example.androidxtest.viewmodel.ShareViewModel;
 
 public class ShareFragment extends Fragment {
 

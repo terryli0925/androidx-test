@@ -1,4 +1,4 @@
-package com.example.androidxtest.ui.home;
+package com.example.androidxtest.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,8 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.androidxtest.R;
 import com.example.androidxtest.adapter.TabPagerAdapter;
-import com.example.androidxtest.ui.userlist.UserListFragment;
-import com.example.androidxtest.ui.share.ShareFragment;
+import com.example.androidxtest.viewmodel.HomeViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 public class HomeFragment extends Fragment {

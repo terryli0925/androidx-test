@@ -1,4 +1,4 @@
-package com.example.androidxtest.ui.tools;
+package com.example.androidxtest.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

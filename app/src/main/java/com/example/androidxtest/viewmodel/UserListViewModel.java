@@ -1,7 +1,6 @@
-package com.example.androidxtest.ui.userlist;
+package com.example.androidxtest.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.example.androidxtest.Constants;
 import com.example.androidxtest.db.User;
@@ -12,14 +11,10 @@ import java.util.List;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 public class UserListViewModel extends AndroidViewModel {

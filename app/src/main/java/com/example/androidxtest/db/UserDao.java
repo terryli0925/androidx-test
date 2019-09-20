@@ -17,12 +17,16 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     List<User> loadAllUsersSync();
 
-    @Query("SELECT * FROM user WHERE id IN (:userIds)")
-    List<User> loadAllUsersByIds(int[] userIds);
+    @Query("SELECT * FROM user WHERE id = :userId")
+    LiveData<User> loadUserById(int userId);
 
     @Query("SELECT * FROM user WHERE first_name LIKE :first AND " +
             "last_name LIKE :last LIMIT 1")
-    User findUserByName(String first, String last);
+    LiveData<User> findUserByName(String first, String last);
+
+    @Query("SELECT * FROM user WHERE first_name LIKE :first AND " +
+            "last_name LIKE :last LIMIT 1")
+    User findUserByNameSync(String first, String last);
 
     @Query("DELETE FROM user")
     void deleteAllUsers();
