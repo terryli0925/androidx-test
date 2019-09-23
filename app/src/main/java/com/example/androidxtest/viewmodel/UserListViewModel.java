@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.work.ExistingWorkPolicy;
@@ -21,19 +22,19 @@ public class UserListViewModel extends AndroidViewModel {
 
     private static final String TAG = UserListViewModel.class.getSimpleName();
 
+    private Application mApplication;
     private UserRepository mUserRepository;
     private LiveData<List<User>> mUsers;
-    private WorkManager mWorkManager;
-
 
     public UserListViewModel(@NonNull Application application, UserRepository userRepository) {
         super(application);
+        mApplication = application;
         mUserRepository = userRepository;
         mUsers = mUserRepository.getUsers();
-        mWorkManager = WorkManager.getInstance(application);
     }
 
-    private static User generateUser() {
+    @VisibleForTesting
+    static User generateUser() {
         Random random = new Random();
         User user = new User();
         user.setFirstName("Terry" + random.nextInt(100));
@@ -48,7 +49,7 @@ public class UserListViewModel extends AndroidViewModel {
     public void insertUsersFromLocal() {
         OneTimeWorkRequest insertWorkRequest = new OneTimeWorkRequest.Builder(InsertUserWorker.class).addTag(Constants.TAG_INSERT_USER_WORKER).build();
 //        mWorkManager.enqueue(insertWorkRequest);
-        mWorkManager.beginUniqueWork(Constants.INSERT_USER_WORKER_NAME, ExistingWorkPolicy.REPLACE, insertWorkRequest).enqueue();
+        WorkManager.getInstance(mApplication).beginUniqueWork(Constants.INSERT_USER_WORKER_NAME, ExistingWorkPolicy.REPLACE, insertWorkRequest).enqueue();
     }
 
     public void updateUser(User user) {
