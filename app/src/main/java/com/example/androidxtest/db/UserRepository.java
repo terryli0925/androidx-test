@@ -4,13 +4,15 @@ import com.example.androidxtest.util.AppExecutors;
 
 import java.util.List;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 
 public class UserRepository {
     private static UserRepository instance;
     private UserDao userDao;
 
-    private UserRepository(UserDao userDao) {
+    @VisibleForTesting
+    public UserRepository(UserDao userDao) {
         this.userDao = userDao;
     }
 

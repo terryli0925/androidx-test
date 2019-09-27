@@ -24,6 +24,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        androidTest.java.srcDirs += "src/test-common/java"
+        test.java.srcDirs += "src/test-common/java"
+    }
 }
 
 dependencies {
@@ -44,10 +48,10 @@ dependencies {
     // Testing dependencies
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "androidx.room:room-testing:$rootProject.roomVersion"
-    // Robolectric
     testImplementation "androidx.test:core:$rootProject.androidXTestCoreVersion"
-    // Mockito
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+//    testImplementation "org.robolectric:robolectric:$rootProject.robolectricVersion"
+    testImplementation "android.arch.core:core-testing:$rootProject.coreTestingVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.testExtJunit"

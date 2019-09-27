@@ -7,17 +7,33 @@ import com.example.androidxtest.db.UserRepository;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@RunWith(JUnit4.class)
 public class UserListViewModelTest {
+
+    @Rule
+    public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
     @Mock
     private Application mApplication;
@@ -74,5 +90,18 @@ public class UserListViewModelTest {
     public void getUsers() {
         mUserViewModel.getUsers();
         verify(mUserRepository).getUsers();
+    }
+
+    @Test
+    public void getUsersWhenObserved() {
+        MutableLiveData<List<User>> users = new MutableLiveData<>();
+        when(mUserViewModel.getUsers()).thenReturn(users);
+
+        Observer<List<User>> observer = mock(Observer.class);
+        mUserRepository.getUsers().observeForever(observer);
+
+        List<User> userList = new ArrayList<>();
+        users.postValue(userList);
+        verify(observer).onChanged(userList);
     }
 }

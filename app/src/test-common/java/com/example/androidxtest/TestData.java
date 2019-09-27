@@ -1,4 +1,4 @@
-package com.example.androidxtest.util;
+package com.example.androidxtest;
 
 import com.example.androidxtest.db.User;
 
